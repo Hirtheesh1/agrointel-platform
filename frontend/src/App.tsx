@@ -9,6 +9,7 @@ import { TamilNaduRegions } from './pages/TamilNaduRegions';
 import { Explainability } from './pages/Explainability';
 import { Alerts } from './pages/Alerts';
 import { Settings } from './pages/Settings';
+import { FarmManagement } from './pages/FarmManagement';
 
 const queryClient = new QueryClient();
 
@@ -25,6 +26,7 @@ function App() {
             <Route path="explainability" element={<Explainability />} />
             <Route path="alerts" element={<Alerts />} />
             <Route path="settings" element={<Settings />} />
+            <Route path="farm" element={<FarmManagement />} />
           </Route>
         </Routes>
       </Router>

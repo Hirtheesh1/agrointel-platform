@@ -1,0 +1,71 @@
+services:
+  # ─────────────────────────────────────────────
+  # FastAPI Backend Web Service
+  # ─────────────────────────────────────────────
+  - type: web
+    name: agrointel-backend
+    runtime: python
+    region: singapore         # closest to Tamil Nadu / India
+    plan: free                # change to "starter" or higher for production SLA
+    rootDir: backend          # relative to repo root (agrointel-platform/)
+
+    buildCommand: |
+      pip install --upgrade pip
+      pip install -r requirements.txt
+      alembic upgrade head
+
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+
+    healthCheckPath: /api/v1/health   # update if your health endpoint differs
+
+    envVars:
+      # ── App ──────────────────────────────────
+      - key: PROJECT_NAME
+        value: AgroIntel AI Platform
+
+      - key: ENVIRONMENT
+        value: production
+
+      - key: DEBUG
+        value: "False"
+
+      # ── Security ─────────────────────────────
+      - key: SECRET_KEY
+        generateValue: true   # Render auto-generates a secure random value
+
+      - key: ACCESS_TOKEN_EXPIRE_MINUTES
+        value: "10080"        # 7 days
+
+      # ── Database ─────────────────────────────
+      # DATABASE_URL is injected automatically from the linked PostgreSQL database below
+      - key: DATABASE_URL
+        fromDatabase:
+          name: agrointel-db
+          property: connectionString
+
+      # ── External APIs ─────────────────────────
+      - key: OPENWEATHER_API_KEY
+        sync: false           # set manually in the Render dashboard (keep secret)
+
+      - key: NASA_POWER_API_KEY
+        sync: false           # set manually in the Render dashboard (keep secret)
+
+      # ── Scheduler Intervals ───────────────────
+      - key: WEATHER_POLLING_INTERVAL_MINUTES
+        value: "60"
+
+      - key: PROCESSING_INTERVAL_MINUTES
+        value: "60"
+
+      - key: HTTP_TIMEOUT_SECONDS
+        value: "10.0"
+
+# ─────────────────────────────────────────────
+# Managed PostgreSQL Database
+# ─────────────────────────────────────────────
+databases:
+  - name: agrointel-db
+    databaseName: agrointel
+    user: agrointel_user
+    region: singapore         # must match the web service region
+    plan: free                # free tier; upgrade for persistent storage

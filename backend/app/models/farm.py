@@ -9,12 +9,17 @@ class Farm(BaseModel):
     location_name = Column(String(255), nullable=True)
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
-    farm_size = Column(Float, nullable=True)  # in hectares or acres, needs to be documented
+    farm_size = Column(Float, nullable=True)  # in hectares
     soil_type = Column(String(100), nullable=True)
-    
+
     # Geospatial Fields
-    analysis_radius = Column(Float, nullable=True, default=5.0) # radius in km
-    boundary_polygon = Column(JSON, nullable=True) # GeoJSON representing farm boundary
+    analysis_radius = Column(Float, nullable=True, default=5.0)  # radius in km
+    boundary_polygon = Column(JSON, nullable=True)  # GeoJSON representing farm boundary
+
+    # Farm Management Fields
+    irrigation_method = Column(String(50), nullable=True, default="drip")  # drip/sprinkler/flood/rainfed
+    water_availability = Column(Float, nullable=True, default=50.0)  # m³/day
+    active_crop = Column(String(100), nullable=True)  # Currently planted crop
 
     # Relationships
     weather_data = relationship("WeatherData", back_populates="farm", cascade="all, delete-orphan")
@@ -24,3 +29,4 @@ class Farm(BaseModel):
     recommendations = relationship("Recommendation", back_populates="farm", cascade="all, delete-orphan")
     alerts = relationship("Alert", back_populates="farm", cascade="all, delete-orphan")
     crop_profiles = relationship("CropProfile", back_populates="farm", cascade="all, delete-orphan")
+

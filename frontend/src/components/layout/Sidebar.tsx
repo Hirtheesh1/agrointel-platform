@@ -1,11 +1,12 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, LineChart, ThermometerSun, Map, BrainCircuit, Bell, Settings } from 'lucide-react';
+import { LayoutDashboard, LineChart, ThermometerSun, Map, BrainCircuit, Bell, Settings, Tractor } from 'lucide-react';
 import { clsx } from 'clsx';
 import { useAppStore } from '../../store';
 
 const navigation = [
   { name: 'Dashboard', href: '/', icon: LayoutDashboard },
+  { name: 'Farm Management', href: '/farm', icon: Tractor },
   { name: 'Forecasting', href: '/forecasting', icon: LineChart },
   { name: 'Environmental Analytics', href: '/analytics', icon: ThermometerSun },
   { name: 'Tamil Nadu Regions', href: '/regions', icon: Map },
