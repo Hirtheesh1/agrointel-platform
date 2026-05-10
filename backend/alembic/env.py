@@ -27,6 +27,8 @@ from app.core.config import settings
 
 target_metadata = Base.metadata
 
+# settings.DATABASE_URL is already normalised by the config validator
+# (postgres:// → postgresql+asyncpg://).  Pass it directly to alembic.
 config.set_main_option("sqlalchemy.url", settings.DATABASE_URL)
 
 # other values from the config, defined by the needs of env.py,

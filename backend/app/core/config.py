@@ -32,6 +32,13 @@ class Settings(BaseSettings):
     @validator("DATABASE_URL", pre=True)
     def assemble_db_connection(cls, v: Optional[str], values: Dict[str, Any]) -> Any:
         if isinstance(v, str):
+            # Render injects a plain postgres:// or postgresql:// URL.
+            # SQLAlchemy async requires the +asyncpg dialect suffix.
+            if v.startswith("postgres://"):
+                return v.replace("postgres://", "postgresql+asyncpg://", 1)
+            if v.startswith("postgresql://"):
+                return v.replace("postgresql://", "postgresql+asyncpg://", 1)
+            # Already has a dialect (e.g. sqlite+aiosqlite:// or postgresql+asyncpg://) – keep as-is
             return v
         return f"postgresql+asyncpg://{values.get('POSTGRES_USER')}:{values.get('POSTGRES_PASSWORD')}@{values.get('POSTGRES_SERVER')}:{values.get('POSTGRES_PORT')}/{values.get('POSTGRES_DB')}"
 
