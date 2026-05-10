@@ -1,0 +1,5 @@
+embeddings {
+  tensor_name: "farm_id:01748"
+  metadata_path: "01748/farm_id\\metadata.tsv"
+  tensor_path: "01748/farm_id\\tensors.tsv"
+}
