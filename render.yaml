@@ -1,6 +1,6 @@
 services:
   # ─────────────────────────────────────────────
-  # FastAPI Backend Web Service
+  # FastAPI Backend Web Service (Native Python)
   # ─────────────────────────────────────────────
   - type: web
     name: agrointel-backend
@@ -16,7 +16,7 @@ services:
 
     startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
 
-    healthCheckPath: /api/v1/health   # update if your health endpoint differs
+    healthCheckPath: /api/v1/health
 
     envVars:
       # ── App ──────────────────────────────────
